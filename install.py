@@ -24,12 +24,14 @@ process_spawning_settings = {
 def apply_theme_config():
     file_path = os.path.join(GAJIM_HOME, 'config')
     new_lines = []
+    properties_not_yet_set = set(theme_config.keys())
 
     with open(file_path, 'r') as f:
         for line in f.readlines():
             key, val = parse_line(line)
 
             if key in theme_config:
+                properties_not_yet_set.remove(key)
                 new_lines.append('%s = %s' % (key, theme_config[key]))
             elif key in process_spawning_settings:
                 val = re.sub('^.*/pop-gnome-theme ', '', val)
@@ -41,6 +43,9 @@ def apply_theme_config():
             else:
                 # Leave it unchanged
                 new_lines.append(line.strip())
+
+    for key in properties_not_yet_set:
+        new_lines.append('%s = %s' % (key, theme_config[key]))
 
     shutil.copy(os.path.join(GAJIM_HOME, 'config'),
                 os.path.join(GAJIM_HOME, 'config.bak'))
