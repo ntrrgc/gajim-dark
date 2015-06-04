@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# http://unix.stackexchange.com/a/17500/39407
+DIR="$(dirname "$(readlink -f "$0")")"
+
+if [ -z "${GTK2_RC_FILES+x}" ]; then
+  export GTK2_RC_FILES_NORMAL_SET="0"
+else
+  export GTK2_RC_FILES_NORMAL_SET="1"
+fi
+export GTK2_RC_FILES_NORMAL="$GTK2_RC_FILES"
+export GTK2_RC_FILES="$DIR/elementary-dark/gtk-2.0/gtkrc"
+
+exec /usr/bin/gajim

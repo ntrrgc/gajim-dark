@@ -1,0 +1,12 @@
+#!/bin/bash
+# Use the default GTK theme, not the one used with gajim
+if [ "$GTK2_RC_FILES_NORMAL_SET" == "1" ]; then
+  export GTK2_RC_FILES="$GTK2_RC_FILES_NORMAL"
+else
+  unset GTK2_RC_FILES
+fi
+
+unset GTK_RC_FILES_NORMAL
+unset GTK_RC_FILES_NORMAL_SET
+
+exec "$@"
